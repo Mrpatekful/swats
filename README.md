@@ -1,25 +1,43 @@
 # Switching from Adam to SGD
 
-"*SWATS from [Keskar & Socher et al. (2017)](https://arxiv.org/pdf/1712.07628.pdf) a high-scoring paper by ICLR in 2018, a method proposed to automatically switch from Adam to SGD for better generalization performance.*"
+*[Wilson et al. (2018)](https://arxiv.org/pdf/1705.08292.pdf)* shows that "*the solutions found by adaptive methods generalize worse (often significantly worse) than SGD, even when these solutions have better training performance. These results suggest that practitioners should reconsider the use of adaptive methods to train neural networks.*"
 
-"*The idea of the algorithm itself is very simple. It uses adam, which works well despite minimal tuning, but after learning until a certain stage, it is taken over by SGD.*"
+"*SWATS from [Keskar & Socher (2017)](https://arxiv.org/pdf/1712.07628.pdf) a high-scoring paper by ICLR in 2018, a method proposed to automatically switch from Adam to SGD for better generalization performance. The idea of the algorithm itself is very simple. It uses Adam, which works well despite minimal tuning, but after learning until a certain stage, it is taken over by SGD.*"
 
 ## Usage
 
-Installing the package is fairly straightforward with pip directly from this git repository with the following command.
+Installing the package is fairly straightforward with pip directly from this git repository or from pypi with either of the following commands.
 
 ```bash
 pip install git+https://github.com/Mrpatekful/swats
 ```
 
-After installation *SWATS* can be used as any other PyTorch `Optimizer`. The following code snippet serves as a simple example to use the algorithm.  For more examples, see this [gist]() with benchmarks and comparison of *SWATS* with other optimizers.
+```bash
+pip install pytorch-swats
+```
+
+After installation *SWATS* can be used as any other PyTorch `Optimizer`. The following code snippet serves as a simple overview of how to use the algorithm. For more examples, see this [gist](), which contains more extensive benchmarks and comparison of *SWATS* with other optimizers.
 
 ```python
-optimizer = torch.optim.SWATS(model.parameters())
+import swats
+
+optimizer = swats.SWATS(model.parameters())
+# note that torch.optim.lr_scheduler.CyclicLR`
+# would not work properly with `SWATS`
+scheduler = swats.CyclicLR(optimizer)
 data_loader = torch.utils.data.DataLoader(...)
+
 for epoch in range(10):
-    for batch in data_loader:
+    for inputs, targets in data_loader:
+        # deleting the stored grad values
         optimizer.zero_grad()
-        train_batch(...)
+
+        outputs = model(inputs)
+        loss = loss_fn(outputs, targets)
+        loss.backward()
+
+        # performing parameter update
         optimizer.step()
+        # stepping scheduler after optimizer update
+        scheduler.step()
 ```
