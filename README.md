@@ -6,7 +6,7 @@
 
 ## Usage
 
-Installing the package is fairly straightforward with pip directly from this git repository or from pypi with either of the following commands.
+Installing the package is straightforward with pip directly from this git repository or from pypi with either of the following commands.
 
 ```bash
 pip install git+https://github.com/Mrpatekful/swats
@@ -16,15 +16,12 @@ pip install git+https://github.com/Mrpatekful/swats
 pip install pytorch-swats
 ```
 
-After installation *SWATS* can be used as any other PyTorch `Optimizer`. The following code snippet serves as a simple overview of how to use the algorithm. For more examples, see this [gist](), which contains more extensive benchmarks and comparison of *SWATS* with other optimizers.
+After installation *SWATS* can be used as any other `torch.optim.Optimizer`. The following code snippet serves as a simple overview of how to use the algorithm.
 
 ```python
 import swats
 
 optimizer = swats.SWATS(model.parameters())
-# note that torch.optim.lr_scheduler.CyclicLR`
-# would not work properly with `SWATS`
-scheduler = swats.CyclicLR(optimizer)
 data_loader = torch.utils.data.DataLoader(...)
 
 for epoch in range(10):
@@ -38,6 +35,4 @@ for epoch in range(10):
 
         # performing parameter update
         optimizer.step()
-        # stepping scheduler after optimizer update
-        scheduler.step()
 ```

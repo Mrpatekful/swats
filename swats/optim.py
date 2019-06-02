@@ -13,7 +13,7 @@ import torch
 
 
 class SWATS(torch.optim.Optimizer):
-    r"""Implements Switchin from Adam to SGD technique. Proposed in
+    r"""Implements Switching from Adam to SGD technique. Proposed in
     `Improving Generalization Performance by Switching from Adam to SGD`
     by Nitish Shirish Keskar, Richard Socher (2017).
 

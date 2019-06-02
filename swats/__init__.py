@@ -8,7 +8,5 @@
 """
 
 from .optim import SWATS
-from .lr_scheduler import CyclicLR
-
 
 __all__ = ['SWATS']
