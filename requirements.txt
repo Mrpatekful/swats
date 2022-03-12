@@ -8,7 +8,7 @@ isort==4.3.20
 lazy-object-proxy==1.4.1
 mccabe==0.6.1
 numpy==1.16.4
-Pillow==6.0.0
+Pillow==9.0.1
 pkginfo==1.5.0.1
 Pygments==2.4.2
 pylint==2.3.1
